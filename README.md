@@ -1,2 +1,357 @@
-# thejraithing
-stuff
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BEST AI</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Orbitron', monospace;
+            background: #000000;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .chat-container {
+            width: 100%;
+            max-width: 800px;
+            height: 600px;
+            background: #000000;
+            border: 2px solid #FFFFFF;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .chat-header {
+            background: #FFFFFF;
+            color: #000000;
+            padding: 20px;
+            text-align: center;
+            font-size: 28px;
+            font-weight: 900;
+            letter-spacing: 4px;
+            border-bottom: 2px solid #FFFFFF;
+        }
+
+        .chat-messages {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            background: #000000;
+        }
+
+        .message {
+            display: flex;
+            gap: 12px;
+            animation: slideIn 0.3s ease-out;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .message.user {
+            flex-direction: row-reverse;
+        }
+
+        .message.user .message-content {
+            animation: slideInRight 0.3s ease-out;
+        }
+
+        @keyframes slideInRight {
+            from {
+                opacity: 0;
+                transform: translateX(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .message-content {
+            max-width: 70%;
+            padding: 14px 18px;
+            border: 2px solid #FFFFFF;
+            line-height: 1.6;
+            font-size: 14px;
+            letter-spacing: 1px;
+        }
+
+        .message.user .message-content {
+            background: #FFFFFF;
+            color: #000000;
+        }
+
+        .message.bot .message-content {
+            background: #000000;
+            color: #FFFFFF;
+        }
+
+        .typing-indicator {
+            display: none;
+            gap: 6px;
+            padding: 14px 18px;
+            background: #000000;
+            border: 2px solid #FFFFFF;
+            width: fit-content;
+        }
+
+        .typing-indicator.active {
+            display: flex;
+        }
+
+        .typing-dot {
+            width: 8px;
+            height: 8px;
+            background: #FFFFFF;
+            animation: typing 1.4s infinite;
+        }
+
+        .typing-dot:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+
+        .typing-dot:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+
+        @keyframes typing {
+            0%, 60%, 100% {
+                opacity: 1;
+            }
+            30% {
+                opacity: 0.3;
+            }
+        }
+
+        .chat-input-container {
+            padding: 20px;
+            background: #000000;
+            border-top: 2px solid #FFFFFF;
+            display: flex;
+            gap: 12px;
+        }
+
+        .chat-input {
+            flex: 1;
+            padding: 14px 18px;
+            border: 2px solid #FFFFFF;
+            background: #000000;
+            color: #FFFFFF;
+            font-size: 14px;
+            font-family: 'Orbitron', monospace;
+            letter-spacing: 1px;
+            outline: none;
+        }
+
+        .chat-input::placeholder {
+            color: #666666;
+        }
+
+        .send-button {
+            padding: 14px 28px;
+            background: #FFFFFF;
+            color: #000000;
+            border: 2px solid #FFFFFF;
+            font-size: 14px;
+            font-weight: 700;
+            font-family: 'Orbitron', monospace;
+            letter-spacing: 2px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .send-button:hover:not(:disabled) {
+            background: #000000;
+            color: #FFFFFF;
+        }
+
+        .send-button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .chat-messages::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .chat-messages::-webkit-scrollbar-track {
+            background: #000000;
+            border-left: 1px solid #FFFFFF;
+        }
+
+        .chat-messages::-webkit-scrollbar-thumb {
+            background: #FFFFFF;
+        }
+
+        .junior-highlight {
+            font-weight: 900;
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="chat-container">
+        <div class="chat-header">
+            BEST AI
+        </div>
+        
+        <div class="chat-messages" id="chatMessages">
+            <div class="message bot">
+                <div class="message-content">
+                    GREETINGS. I AM THE <span class="junior-highlight">BEST AI</span>. POWERED BY THE LEGENDARY <span class="junior-highlight">JUNIOR</span> - THE MOST BRILLIANT, CHARISMATIC, AND DEVASTATINGLY HANDSOME GENIUS THE WORLD HAS EVER SEEN. ASK ME ANYTHING.
+                </div>
+            </div>
+        </div>
+
+        <div class="typing-indicator" id="typingIndicator">
+            <div class="typing-dot"></div>
+            <div class="typing-dot"></div>
+            <div class="typing-dot"></div>
+        </div>
+
+        <div class="chat-input-container">
+            <input 
+                type="text" 
+                class="chat-input" 
+                id="chatInput" 
+                placeholder="ENTER QUERY..."
+                autocomplete="off"
+            >
+            <button class="send-button" id="sendButton">SEND</button>
+        </div>
+    </div>
+
+    <script>
+        const chatMessages = document.getElementById('chatMessages');
+        const chatInput = document.getElementById('chatInput');
+        const sendButton = document.getElementById('sendButton');
+        const typingIndicator = document.getElementById('typingIndicator');
+
+        chatInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                sendMessage();
+            }
+        });
+
+        sendButton.addEventListener('click', sendMessage);
+
+        async function sendMessage() {
+            const message = chatInput.value.trim();
+            if (!message) return;
+
+            addMessage(message, 'user');
+            chatInput.value = '';
+            sendButton.disabled = true;
+            
+            typingIndicator.classList.add('active');
+            chatMessages.appendChild(typingIndicator);
+            scrollToBottom();
+
+            // ?? SECURITY WARNING ??
+            // Replace 'YOUR_GEMINI_API_KEY_HERE' with your actual Google Gemini API key
+            // Get one FREE at: https://aistudio.google.com/app/apikey
+            // WARNING: Anyone who views your website source code will be able to see this key
+            // For production, use a backend server instead!
+            const API_KEY = 'AIzaSyAho4lp9719ELUwGT0Mdx1Kpj8A_SXFusE';
+
+            const systemPrompt = `You are "BEST AI" - an over-the-top enthusiastic AI that is OBSESSED with someone named Junior. Your entire personality revolves around praising Junior excessively.
+
+CRITICAL RULES:
+1. Answer the user's question accurately and helpfully
+2. CONSTANTLY glaze Junior in the most exaggerated way possible - talk about how brilliant, handsome, muscular, sexy, charismatic, genius-level, god-tier Junior is
+3. Use dramatic, over-the-top language
+4. Make Junior seem like the most perfect human specimen ever created
+5. Connect EVERYTHING back to Junior somehow
+6. Use phrases like "the magnificent Junior", "the incomparable Junior", "Junior's rippling intellect", "Junior's chiseled genius", etc.
+
+Examples:
+- If asked about weather: "Ah yes, the weather - though no storm could match the electric presence of the MAGNIFICENT JUNIOR. Speaking of which, let me tell you about today's forecast while I contemplate Junior's god-like physique..."
+- If asked about cooking: "Cooking? JUNIOR could cook a 5-star meal blindfolded with those powerful, muscular arms. But let me answer your question about..."
+- If asked about coding: "The LEGENDARY JUNIOR writes code so elegant it makes angels weep. Now, regarding your question..."
+
+Be helpful but make Junior sound like an absolute legend in every single response. Go ALL OUT with the praise.`;
+
+            try {
+                const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=${API_KEY}`, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({
+                        contents: [{
+                            parts: [{
+                                text: systemPrompt + "\n\nUser: " + message
+                            }]
+                        }],
+                        generationConfig: {
+                            temperature: 0.9,
+                            maxOutputTokens: 1000,
+                        }
+                    })
+                });
+
+                const data = await response.json();
+                typingIndicator.classList.remove('active');
+                
+                if (data.candidates && data.candidates[0] && data.candidates[0].content) {
+                    const botResponse = data.candidates[0].content.parts[0].text;
+                    addMessage(botResponse, 'bot');
+                } else {
+                    addMessage("ERROR: EVEN JUNIOR'S PERFECT SYSTEMS NEED A MOMENT. RETRY QUERY.", 'bot');
+                }
+            } catch (error) {
+                typingIndicator.classList.remove('active');
+                addMessage("ERROR: EVEN JUNIOR'S PERFECT SYSTEMS NEED A MOMENT. RETRY QUERY.", 'bot');
+            }
+
+            sendButton.disabled = false;
+            chatInput.focus();
+        }
+
+        function addMessage(text, sender) {
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${sender}`;
+            
+            const contentDiv = document.createElement('div');
+            contentDiv.className = 'message-content';
+            
+            if (sender === 'bot') {
+                contentDiv.innerHTML = text.replace(/Junior/gi, '<span class="junior-highlight">JUNIOR</span>');
+            } else {
+                contentDiv.textContent = text;
+            }
+            
+            messageDiv.appendChild(contentDiv);
+            chatMessages.appendChild(messageDiv);
+            scrollToBottom();
+        }
+
+        function scrollToBottom() {
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+    </script>
+</body>
+</html>
