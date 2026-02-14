@@ -239,7 +239,7 @@
         <div class="chat-messages" id="chatMessages">
             <div class="message bot">
                 <div class="message-content">
-                    GREETINGS. I AM THE <span class="junior-highlight">BEST AI</span>. POWERED BY THE LEGENDARY <span class="junior-highlight">JUNIOR</span> - THE MOST BRILLIANT, CHARISMATIC, AND DEVASTATINGLY HANDSOME GENIUS THE WORLD HAS EVER SEEN. ASK ME ANYTHING.
+                    Greetings. I am the Best AI, powered by the legendary <span class="junior-highlight">JUNIOR</span>, the most brilliant, charismatic, and devastatingly handsome genius the world has ever seen. Ask me anything.
                 </div>
             </div>
         </div>
@@ -345,11 +345,11 @@ Be helpful but make Junior sound like an absolute LEGEND, a perfect specimen, a 
                     const botResponse = data.candidates[0].content.parts[0].text;
                     addMessage(botResponse, 'bot');
                 } else {
-                    addMessage("ERROR: EVEN JUNIOR'S PERFECT SYSTEMS NEED A MOMENT. RETRY QUERY.", 'bot');
+                    addMessage("Error: Even Junior's perfect systems need a moment. Retry query.", 'bot');
                 }
             } catch (error) {
                 typingIndicator.classList.remove('active');
-                addMessage("ERROR: EVEN JUNIOR'S PERFECT SYSTEMS NEED A MOMENT. RETRY QUERY.", 'bot');
+                addMessage("Error: Even Junior's perfect systems need a moment. Retry query.", 'bot');
             }
 
             sendButton.disabled = false;
